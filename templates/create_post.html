@@ -1,0 +1,326 @@
+{% extends "base.html" %} {% block title %}Create Post - Social App{% endblock
+%} {% block content %}
+<div class="create-post-container">
+  <div class="create-post-header">
+    <h1><i class="fas fa-plus-circle"></i> Create a New Post</h1>
+    <p>Share your thoughts and moments with your network</p>
+  </div>
+
+  <div class="create-post-card">
+    <form
+      method="post"
+      action="/create-post"
+      enctype="multipart/form-data"
+      id="postForm"
+    >
+      <div class="form-group">
+        <label for="content">
+          <i class="fas fa-pen"></i> What's on your mind?
+        </label>
+        <textarea
+          id="content"
+          name="content"
+          rows="5"
+          class="form-control"
+          placeholder="Share your thoughts, ideas, or experiences..."
+          required
+        ></textarea>
+        <div class="character-counter">
+          <span id="charCount">0</span> characters
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="image" class="file-upload-label">
+          <i class="fas fa-image"></i> Add an Image (optional)
+        </label>
+        <div class="file-upload-container">
+          <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*"
+            class="file-input"
+            onchange="previewImage(event)"
+          />
+          <div class="file-upload-button">
+            <i class="fas fa-cloud-upload-alt"></i> Choose Image
+          </div>
+          <div class="file-name" id="fileName">No file chosen</div>
+        </div>
+        <div
+          class="image-preview-container"
+          id="imagePreviewContainer"
+          style="display: none"
+        >
+          <img id="imagePreview" src="/placeholder.svg" alt="Image preview" />
+          <button
+            type="button"
+            class="remove-image-btn"
+            onclick="removeImage()"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn">
+          <i class="fas fa-paper-plane"></i> Post
+        </button>
+        <a href="/profile/{{ user.username }}" class="btn btn-outline">
+          <i class="fas fa-times"></i> Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+
+  <div class="post-tips">
+    <h3><i class="fas fa-lightbulb"></i> Tips for Great Posts</h3>
+    <ul>
+      <li><i class="fas fa-check"></i> Be clear and concise</li>
+      <li>
+        <i class="fas fa-check"></i> Add relevant images to enhance your post
+      </li>
+      <li><i class="fas fa-check"></i> Use respectful language</li>
+      <li><i class="fas fa-check"></i> Engage with comments on your posts</li>
+    </ul>
+  </div>
+</div>
+
+<style>
+  .create-post-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .create-post-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .create-post-header h1 {
+    color: var(--gray-900);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .create-post-header p {
+    color: var(--secondary);
+  }
+
+  .create-post-card {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .create-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .form-control {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    resize: vertical;
+  }
+
+  .character-counter {
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--secondary);
+    margin-top: 0.5rem;
+  }
+
+  .file-upload-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+
+  .file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .file-upload-button {
+    background-color: var(--gray-100);
+    color: var(--gray-700);
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .file-name {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background-color: var(--white);
+    border: 1px solid var(--gray-300);
+    border-left: none;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    color: var(--secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .file-input:hover + .file-upload-button {
+    background-color: var(--gray-200);
+  }
+
+  .image-preview-container {
+    margin-top: 1rem;
+    position: relative;
+    max-width: 300px;
+  }
+
+  .image-preview-container img {
+    width: 100%;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .remove-image-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: var(--danger);
+    color: white;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.3s ease;
+  }
+
+  .remove-image-btn:hover {
+    background-color: var(--danger-dark);
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .post-tips {
+    background-color: var(--primary-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+  }
+
+  .post-tips h3 {
+    color: var(--primary-dark);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .post-tips ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .post-tips li {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .post-tips li i {
+    color: var(--success);
+  }
+
+  @media (max-width: 768px) {
+    .create-post-card {
+      padding: 1.5rem;
+    }
+
+    .form-actions {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  // Character counter
+  const contentTextarea = document.getElementById("content");
+  const charCount = document.getElementById("charCount");
+
+  contentTextarea.addEventListener("input", function () {
+    charCount.textContent = this.value.length;
+  });
+
+  // Image preview
+  function previewImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const fileName = document.getElementById("fileName");
+      fileName.textContent = file.name;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imagePreview = document.getElementById("imagePreview");
+        imagePreview.src = e.target.result;
+
+        const imagePreviewContainer = document.getElementById(
+          "imagePreviewContainer"
+        );
+        imagePreviewContainer.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Remove image
+  function removeImage() {
+    const imageInput = document.getElementById("image");
+    imageInput.value = "";
+
+    const fileName = document.getElementById("fileName");
+    fileName.textContent = "No file chosen";
+
+    const imagePreviewContainer = document.getElementById(
+      "imagePreviewContainer"
+    );
+    imagePreviewContainer.style.display = "none";
+  }
+
+  // Form animation
+  const postForm = document.getElementById("postForm");
+  postForm.addEventListener("submit", function () {
+    document.querySelector(".create-post-card").classList.add("submitting");
+  });
+</script>
+{% endblock %}

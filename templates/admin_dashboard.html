@@ -1,0 +1,90 @@
+{% extends "base.html" %} {% block title %}Admin Dashboard - Social App{%
+endblock %} {% block content %}
+<h1>Admin Dashboard</h1>
+
+<h2>Users</h2>
+<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px">
+  <thead>
+    <tr style="background-color: #f2f2f2">
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left">ID</th>
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+        Username
+      </th>
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+        Email
+      </th>
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+        Admin
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user_item in users %}
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px">{{ user_item.id }}</td>
+      <td style="border: 1px solid #ddd; padding: 8px">
+        <a href="/profile/{{ user_item.username }}">{{ user_item.username }}</a>
+      </td>
+      <td style="border: 1px solid #ddd; padding: 8px">
+        {{ user_item.email }}
+      </td>
+      <td style="border: 1px solid #ddd; padding: 8px">
+        {{ "Yes" if user_item.is_admin else "No" }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>All Posts</h2>
+<table style="width: 100%; border-collapse: collapse">
+  <thead>
+    <tr style="background-color: #f2f2f2">
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left">ID</th>
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+        User
+      </th>
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+        Content
+      </th>
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+        Timestamp
+      </th>
+      <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+        Actions
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in post_data %}
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px">{{ item.post.id }}</td>
+      <td style="border: 1px solid #ddd; padding: 8px">
+        <a href="/profile/{{ item.username }}">{{ item.username }}</a>
+      </td>
+      <td style="border: 1px solid #ddd; padding: 8px">
+        {{ item.post.content }} {% if item.post.image_path %}
+        <br />
+        <img
+          src="/static/{{ item.post.image_path }}"
+          alt="Post image"
+          style="max-width: 100px"
+        />
+        {% endif %}
+      </td>
+      <td style="border: 1px solid #ddd; padding: 8px">
+        {{ item.post.timestamp.strftime('%Y-%m-%d %H:%M') }}
+      </td>
+      <td style="border: 1px solid #ddd; padding: 8px">
+        <a
+          href="/delete-post/{{ item.post.id }}"
+          class="btn btn-danger"
+          onclick="return confirm('Are you sure you want to delete this post?')"
+          >Delete</a
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

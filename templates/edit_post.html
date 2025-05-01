@@ -1,0 +1,38 @@
+{% extends "base.html" %} {% block title %}Edit Post - Social App{% endblock %}
+{% block content %}
+<h1>Edit Post</h1>
+
+<form
+  method="post"
+  action="/edit-post/{{ post.id }}"
+  enctype="multipart/form-data"
+>
+  <div class="form-group">
+    <label for="content">Content:</label>
+    <textarea id="content" name="content" rows="5" required>
+{{ post.content }}</textarea
+    >
+  </div>
+
+  {% if post.image_path %}
+  <div class="form-group">
+    <p>Current Image:</p>
+    <img
+      src="/static/{{ post.image_path }}"
+      alt="Current post image"
+      style="max-width: 300px"
+    />
+  </div>
+  {% endif %}
+
+  <div class="form-group">
+    <label for="image">New Image (optional):</label>
+    <input type="file" id="image" name="image" accept="image/*" />
+    <small>Leave empty to keep the current image</small>
+  </div>
+
+  <button type="submit" class="btn">Update Post</button>
+</form>
+
+<p><a href="/profile/{{ user.username }}">Back to Profile</a></p>
+{% endblock %}

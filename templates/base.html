@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Social App{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #0ea5e9;
+        --primary-dark: #0284c7;
+        --primary-light: #e0f2fe;
+        --secondary: #64748b;
+        --background: #f8fafc;
+        --white: #ffffff;
+        --gray-100: #f1f5f9;
+        --gray-200: #e2e8f0;
+        --gray-300: #cbd5e1;
+        --gray-700: #334155;
+        --gray-900: #0f172a;
+        --danger: #ef4444;
+        --danger-dark: #b91c1c;
+        --success: #10b981;
+        --border-radius: 8px;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --transition-speed: 0.3s;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        color: var(--gray-700);
+        background-color: var(--background);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      header {
+        background-color: var(--white);
+        box-shadow: var(--shadow-sm);
+        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        z-index: 110;
+      }
+
+      .logo i {
+        font-size: 1.25rem;
+      }
+
+      nav {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+      }
+
+      nav a {
+        color: var(--gray-700);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: color 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      nav a:hover {
+        color: var(--primary);
+      }
+
+      nav a.active {
+        color: var(--primary);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        width: 100%;
+        flex: 1;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: var(--border-radius);
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--primary);
+        border: 1px solid var(--primary);
+      }
+
+      .btn-outline:hover {
+        background: var(--primary-light);
+        color: var(--primary-dark);
+      }
+
+      .btn-danger {
+        background: var(--danger);
+      }
+
+      .btn-danger:hover {
+        background: var(--danger-dark);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--gray-700);
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--gray-300);
+        border-radius: var(--border-radius);
+        font-family: inherit;
+        font-size: 1rem;
+        transition: border-color 0.2s ease;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-light);
+      }
+
+      .alert {
+        padding: 1rem;
+        background-color: var(--danger);
+        color: white;
+        margin-bottom: 1.5rem;
+        border-radius: var(--border-radius);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .card {
+        background: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .post {
+        background: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .post-image {
+        max-width: 100%;
+        height: auto;
+        margin-top: 1rem;
+        border-radius: var(--border-radius);
+      }
+
+      .post-actions {
+        margin-top: 1rem;
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .post-meta {
+        color: var(--secondary);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .search-form {
+        margin: 1.5rem 0;
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .search-input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--gray-300);
+        border-radius: var(--border-radius);
+        font-family: inherit;
+        font-size: 1rem;
+      }
+
+      .user-list,
+      .post-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .user-list li,
+      .post-list li {
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1.5rem;
+        background: var(--white);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+      }
+
+      th,
+      td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--gray-200);
+      }
+
+      th {
+        background-color: var(--gray-100);
+        font-weight: 600;
+        color: var(--gray-700);
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      tr:hover {
+        background-color: var(--gray-100);
+      }
+
+      footer {
+        background-color: var(--white);
+        padding: 1.5rem;
+        text-align: center;
+        color: var(--secondary);
+        font-size: 0.9rem;
+        margin-top: auto;
+        box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Hamburger Menu Styles */
+      .hamburger-menu {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 20px;
+        cursor: pointer;
+        z-index: 110;
+      }
+
+      .hamburger-line {
+        width: 100%;
+        height: 2px;
+        background-color: var(--gray-700);
+        transition: all var(--transition-speed) ease;
+      }
+
+      .mobile-nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background-color: var(--white);
+        box-shadow: var(--shadow-lg);
+        z-index: 100;
+        transition: right var(--transition-speed) ease;
+        display: flex;
+        flex-direction: column;
+        padding: 5rem 2rem 2rem;
+        overflow-y: auto;
+      }
+
+      .mobile-nav.active {
+        right: 0;
+      }
+
+      .mobile-nav-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 90;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity var(--transition-speed) ease,
+          visibility var(--transition-speed) ease;
+      }
+
+      .mobile-nav-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .mobile-nav-links a {
+        color: var(--gray-700);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--gray-200);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: color 0.2s ease;
+      }
+
+      .mobile-nav-links a:last-child {
+        border-bottom: none;
+      }
+
+      .mobile-nav-links a:hover {
+        color: var(--primary);
+      }
+
+      .mobile-nav-links a.active {
+        color: var(--primary);
+      }
+
+      .mobile-nav-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+      }
+
+      .mobile-nav-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--gray-700);
+        cursor: pointer;
+        transition: color 0.2s ease;
+      }
+
+      .mobile-nav-close:hover {
+        color: var(--primary);
+      }
+
+      .mobile-nav-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--gray-900);
+      }
+
+      /* Animation for hamburger menu */
+      .hamburger-menu.active .hamburger-line:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+      }
+
+      .hamburger-menu.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger-menu.active .hamburger-line:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+      }
+
+      /* Responsive styles */
+      @media (max-width: 768px) {
+        .header-container {
+          flex-direction: row;
+          gap: 1rem;
+        }
+
+        nav.desktop-nav {
+          display: none;
+        }
+
+        .hamburger-menu {
+          display: flex;
+        }
+      }
+
+      /* Geometric shapes for background */
+      .bg-shapes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      .shape {
+        position: absolute;
+        opacity: 0.05;
+        border-radius: 50%;
+      }
+
+      .shape-1 {
+        width: 400px;
+        height: 400px;
+        background: var(--primary);
+        top: -200px;
+        right: -100px;
+      }
+
+      .shape-2 {
+        width: 300px;
+        height: 300px;
+        background: var(--primary);
+        bottom: -150px;
+        left: -150px;
+      }
+
+      .shape-3 {
+        width: 200px;
+        height: 200px;
+        background: var(--secondary);
+        top: 50%;
+        right: 10%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+
+    <header>
+      <div class="header-container">
+        <a href="/" class="logo">
+          <i class="fas fa-users"></i>
+          Team Anak Ajaib
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="desktop-nav">
+          <a href="/" class="{% if request.url.path == '/' %}active{% endif %}">
+            <i class="fas fa-home"></i> Home
+          </a>
+          {% if user %}
+          <a
+            href="/profile/{{ user.username }}"
+            class="{% if '/profile/' in request.url.path %}active{% endif %}"
+          >
+            <i class="fas fa-user"></i> Profile
+          </a>
+          <a
+            href="/create-post"
+            class="{% if request.url.path == '/create-post' %}active{% endif %}"
+          >
+            <i class="fas fa-plus-circle"></i> Create Post
+          </a>
+          <a
+            href="/search"
+            class="{% if request.url.path == '/search' %}active{% endif %}"
+          >
+            <i class="fas fa-search"></i> Search
+          </a>
+          {% if user.is_admin %}
+          <a
+            href="/admin/dashboard"
+            class="{% if request.url.path == '/admin/dashboard' %}active{% endif %}"
+          >
+            <i class="fas fa-tachometer-alt"></i> Admin
+          </a>
+          {% endif %}
+          <a href="/logout"> <i class="fas fa-sign-out-alt"></i> Logout </a>
+          {% else %}
+          <a
+            href="/login"
+            class="{% if request.url.path == '/login' %}active{% endif %}"
+          >
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+          <a
+            href="/register"
+            class="{% if request.url.path == '/register' %}active{% endif %}"
+          >
+            <i class="fas fa-user-plus"></i> Register
+          </a>
+          {% endif %}
+        </nav>
+
+        <!-- Hamburger Menu Button -->
+        <div class="hamburger-menu" id="hamburgerMenu">
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-header">
+        <div class="mobile-nav-title">Menu</div>
+        <button class="mobile-nav-close" id="mobileNavClose">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="mobile-nav-links">
+        <a href="/" class="{% if request.url.path == '/' %}active{% endif %}">
+          <i class="fas fa-home"></i> Home
+        </a>
+        {% if user %}
+        <a
+          href="/profile/{{ user.username }}"
+          class="{% if '/profile/' in request.url.path %}active{% endif %}"
+        >
+          <i class="fas fa-user"></i> Profile
+        </a>
+        <a
+          href="/create-post"
+          class="{% if request.url.path == '/create-post' %}active{% endif %}"
+        >
+          <i class="fas fa-plus-circle"></i> Create Post
+        </a>
+        <a
+          href="/search"
+          class="{% if request.url.path == '/search' %}active{% endif %}"
+        >
+          <i class="fas fa-search"></i> Search
+        </a>
+        {% if user.is_admin %}
+        <a
+          href="/admin/dashboard"
+          class="{% if request.url.path == '/admin/dashboard' %}active{% endif %}"
+        >
+          <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+        </a>
+        {% endif %}
+        <a href="/logout"> <i class="fas fa-sign-out-alt"></i> Logout </a>
+        {% else %}
+        <a
+          href="/login"
+          class="{% if request.url.path == '/login' %}active{% endif %}"
+        >
+          <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+        <a
+          href="/register"
+          class="{% if request.url.path == '/register' %}active{% endif %}"
+        >
+          <i class="fas fa-user-plus"></i> Register
+        </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
+    <div class="container">{% block content %}{% endblock %}</div>
+
+    <footer>
+      <p>&copy; {{ current_year }} Team Social App. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // Mobile Navigation
+      document.addEventListener("DOMContentLoaded", function () {
+        const hamburgerMenu = document.getElementById("hamburgerMenu");
+        const mobileNav = document.getElementById("mobileNav");
+        const mobileNavClose = document.getElementById("mobileNavClose");
+        const mobileNavOverlay = document.getElementById("mobileNavOverlay");
+
+        // Function to open mobile menu
+        function openMobileMenu() {
+          hamburgerMenu.classList.add("active");
+          mobileNav.classList.add("active");
+          mobileNavOverlay.classList.add("active");
+          document.body.style.overflow = "hidden"; // Prevent scrolling when menu is open
+        }
+
+        // Function to close mobile menu
+        function closeMobileMenu() {
+          hamburgerMenu.classList.remove("active");
+          mobileNav.classList.remove("active");
+          mobileNavOverlay.classList.remove("active");
+          document.body.style.overflow = ""; // Re-enable scrolling
+        }
+
+        // Event listeners
+        hamburgerMenu.addEventListener("click", openMobileMenu);
+        mobileNavClose.addEventListener("click", closeMobileMenu);
+        mobileNavOverlay.addEventListener("click", closeMobileMenu);
+
+        // Close menu when clicking a link (for better UX)
+        const mobileNavLinks = document.querySelectorAll(".mobile-nav-links a");
+        mobileNavLinks.forEach((link) => {
+          link.addEventListener("click", closeMobileMenu);
+        });
+
+        // Close menu when window is resized to desktop size
+        window.addEventListener("resize", function () {
+          if (
+            window.innerWidth > 768 &&
+            mobileNav.classList.contains("active")
+          ) {
+            closeMobileMenu();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
